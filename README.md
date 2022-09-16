@@ -1,0 +1,2 @@
+# AzugaTraining
+JDK 11
