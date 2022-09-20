@@ -9,11 +9,14 @@ import java.util.List;
 
 public class CSVtoHTML {
     public static void main(String[] args) {
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("/Users/azuga/Desktop/weather1.csv"))) {
             String currentLine;
             while ((currentLine = reader.readLine()) != null) {
-                lines.add(currentLine);
+
+                String s = currentLine.replace("//cdn.weatherapi.com","<img src=https://cdn.weatherapi.com/");
+                String s1 = s.replace("png","png style=\"width:50px;height:50px;\"");
+                lines.add(s1);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -25,7 +28,7 @@ public class CSVtoHTML {
             lines.set(i, lines.get(i).replaceAll(",", "</td><td>"));
         }
 
-        // embrace <table> and </table>
+
         lines.set(0, "<table border>" + lines.get(0));
         lines.set(lines.size() - 1, lines.get(lines.size() - 1) + "</table>");
 
