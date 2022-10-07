@@ -29,5 +29,3 @@ Test cases for csv to pdf, html and xml methods using checksum and pdfunit libra
 Test case for pipe method.
 
 
-## MuseumApi
-Test cases for museum api.
