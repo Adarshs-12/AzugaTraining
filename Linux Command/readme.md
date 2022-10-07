@@ -1,7 +1,4 @@
 
-![Logo](https://static.javatpoint.com/core/images/java-logo1.png)
-
-
 # Azuga Training
 - Table of Contents
 
@@ -42,3 +39,33 @@ It also contains several @Test cases of pipe command.
 
 If you have any feedback, please reach out to us at adarshkumarsahu@gmail.com
 
+
+## Documentation
+
+[Date command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/Date.java) 
+
+[Mkdir command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/Mkdir.java) 
+
+[Wc command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/Wc.java) 
+
+[Whoami command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/Whoami.java) 
+
+[cat command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/cat.java) 
+
+[copy command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/copy.java) 
+
+[echo command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/echo.java) 
+
+[ls command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/ls.java) 
+
+[mv command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/move.java) 
+
+[Pipe command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/pipe1.java)
+
+[pwd command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/pwd.java) 
+
+[remove command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/remove.java) 
+
+[rmdir command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/rmdir.java) 
+
+[touch command](https://github.com/Adarshs-12/AzugaTraining/blob/develop/Linux%20Command/touch.java)
