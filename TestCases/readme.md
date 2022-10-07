@@ -17,9 +17,6 @@ JUnit 5 = junit jupiter + junit platform + junit vintage
 
 All these library combined with will form a JUnit environment and to run Junit testing without using maven or gradle.
 
-## CheckSum
-CheckSum is a minified representation of a binary stream of data.
-
 ## ConverterTest
 Test cases for csv to pdf, html and xml methods using checksum and pdfunit library.
 #### External library
