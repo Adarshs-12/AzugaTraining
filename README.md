@@ -1,5 +1,4 @@
 
-![Logo]()
 
 
 # AzugaTraining
