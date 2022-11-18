@@ -1,6 +1,3 @@
-package com.training.day5;
-
-
 
 public class HelloWorld {
 
