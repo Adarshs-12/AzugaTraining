@@ -1,0 +1,434 @@
+<!DOCTYPE HTML> 
+<html> 
+ 
+<head>
+    <title>
+        Museum JSON data to a
+        html table using JavaScript
+    </title>
+    <style>
+        /* Table styles. */
+
+
+       
+
+td, th { border: 1px solid #111; padding: 6px; }
+th { font-weight: 700; }
+
+
+td,
+th {
+	text-align: left;
+	padding: .5rem 1rem;
+}
+
+tbody tr:nth-child(odd) {
+	/* background-color: #ccc; */
+}
+
+th {
+	/* background: #444; */
+	/* color: #fff; */
+}
+
+/* Pagination. */
+.pagination {
+	/* background: #333; */
+	padding: 1rem;
+	margin-bottom: 1rem;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+#numbers {
+	padding: 0;
+	margin: 0 2rem;
+	list-style-type: none;
+	display: flex;
+}
+
+#numbers li a {
+	color: rgb(7, 7, 7);
+	padding: .5rem 1rem;
+	text-decoration: none;
+	opacity: .7;
+}
+
+#numbers li a:hover {
+	opacity: 1;
+}
+
+#numbers li a.active {
+	opacity: 1;
+	background: #fff;
+	color: #333;
+}
+
+    </style>
+     
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+    </script>
+</head>
+ 
+<body style = "text-align:center;" id = "body"> 
+     
+    <h1 style = "color:black;" > 
+        Museum Table 
+    </h1>
+     
+    <p id = "GFG_UP" style =
+        "font-size: 15px; font-weight: bold;">
+    </p>
+ 
+     
+    <button onclick = "constructTable('#table')">
+        view Table
+    </button>
+
+    <div>
+        <input type="text" id="mySearch" class="searchBtn" placeholder="Search by objectID">
+    </div>
+
+
+    <button type="button"  id="sortHighBtn">DESC sort</button>
+    <button type="button"  id="sortLowBtn">ASC sort</button>
+
+    <!-- <button onclick = onclick = "onInsert({JSON.stringify(list[1]).replace(/\s+/g, '')})">
+        insert
+    </button> -->
+    
+    <div id = "azuga"></div>
+    <div id = "division"></div>
+     
+    <br><br>
+     
+    <table align = "center" id="table" class = "searchingTable" border="1">
+        <tbody></tbody>
+    </table>
+
+
+
+    <div class="pagination">
+        <ol id="numbers"></ol>
+    </div>
+
+</div>
+
+
+
+    
+    <script>
+      
+       var list;
+       var url = "http://localhost:8080/frontend/webapi/myresource1/select";
+       $.getJSON(url , function(mylist){
+           list=mylist;
+           console.log(list.length)
+       });
+             
+       function constructTable(selector) {
+             
+            // Getting the all column names
+            var cols = Headers(list, selector); 
+  
+            // Traversing the JSON data
+            for (var i = 0; i < list.length; i++) {
+                var row = $('<tr />');  
+                for (var colIndex = 0; colIndex < cols.length; colIndex++)
+                {
+                    var val = list[i][cols[colIndex]];
+                    // If there is any key, which is matching
+                    // with the column name
+                    if (val == null) val = ""; 
+                        row.append($('<td/>').html(val));
+                }
+
+                row.append($(`<button onclick = onDelete(${JSON.stringify(list[i]).replace(/\s+/g, '')})/>`).html("delete"));
+                row.append($(`<button onclick = onUpdate(${JSON.stringify(list[i]).replace(/\s+/g, '')})/>`).html("Update"));
+
+                 
+                // Adding each row to the table
+                $(selector).append(row);
+            }
+            $("#azuga").append($(`<button onclick = onInsert(${JSON.stringify(list[0]).replace(/\s+/g, '')})/>`).html("insert"));
+
+            $(function() {
+            debugger;
+	const rowsPerPage = 7;
+	const rows = $('#table tbody tr');
+	const rowsCount = 45;
+	const pageCount = Math.ceil(rowsCount / rowsPerPage); // avoid decimals
+	const numbers = $('#numbers');
+	
+	// Generate the pagination.
+	for (var i = 0; i < pageCount; i++) {
+		numbers.append('<li><a href="#">' + (i+1) + '</a></li>');
+	}
+		
+	// Mark the first page link as active.
+	$('#numbers li:first-child a').addClass('active');
+
+	// Display the first set of rows.
+	displayRows(1);
+	
+	// On pagination click.
+	$('#numbers li a').click(function(e) {
+		var $this = $(this);
+		
+		e.preventDefault();
+		
+		// Remove the active class from the links.
+		$('#numbers li a').removeClass('active');
+		
+		// Add the active class to the current link.
+		$this.addClass('active');
+		
+		// Show the rows corresponding to the clicked page ID.
+		displayRows($this.text());
+	});
+	
+	// Function that displays rows for a specific page.
+	function displayRows(index) {
+		var start = (index - 1) * rowsPerPage;
+		var end = start + rowsPerPage;
+		
+		// Hide all rows.
+		rows.hide();
+		
+		// Show the proper rows for this page.
+		rows.slice(start, end).show();
+	}
+});
+
+
+        }
+        
+        // $("azuga").append($(`<button onclick = onInsert(${JSON.stringify(list[1]).replace(/\s+/g, '')})/>`).html("insert"));
+        // $("#azuga").append($(`<button onclick = onInsert(${JSON.stringify(list[1]).replace(/\s+/g, '')})/>`).html("insert"));
+
+        function Headers(list, selector) {
+            var columns = [];
+            // var topHeader = $('<thead/>');
+            var header = $('<tr/>');
+            
+    
+            for (var i = 0; i < list.length; i++) {
+                var row = list[i];
+                 
+                for (var k in row) {
+                    if ($.inArray(k, columns) == -1) {
+                        columns.push(k);
+                         
+                        // Creating the header
+                        header.append($('<th/>').html(k));
+                    }
+                }
+            }
+            header.append($('<th/>').html("Action"));
+        
+             
+            // Appending the header to the table
+            $(selector).append(header);
+                return columns;
+        }      
+        function Buttons(list, selector) {
+           var buttons = [];
+           $append
+
+        }
+        function onDelete(td) {
+        //    row = td.parentElement.parentElement;
+            let id="";
+        //     console.log(id);
+            Object.entries(td).forEach(([key , value])=> {
+                if(key == "objectID"){
+                   id = value;
+                }
+            });
+            fetch('http://localhost:8080/frontend/webapi/myresource1/delete/'+ id,{
+            method: "DELETE",
+            headers: {
+            'content-type': 'application/json'
+            }
+           })
+           .then(res => {
+           if(res.ok){console.log("delete request successful")}
+           else{console.log("delete request unsuccessful")}
+           return res
+           })
+           .then(res => console.log(res))
+           document.getElementById("employeeList").deleteRow(row.rowIndex);
+           resetForm();
+
+        }
+        
+        function onUpdate(up) {
+            var form = $('<div/>')
+            Object.entries(up).forEach(([key, value])=> {
+                
+                
+            form.append($("<label/>").text(key).html(key));
+            form.append($("<br/>"));
+                    var val = `${JSON.stringify(value)}`;
+                    var v = val.replace("\"","").replace("\"","");
+                form.append($('<input type="text"/>').attr({id:key, name:key, value:v}).html(v));
+                form.append($("<br/>"));
+            });
+            form.append($(`<button onclick = update(${JSON.stringify(up)})>submit</button>`));
+            $("#division").append(form).html;
+            
+        }
+        function onInsert(up) {
+            var form = $('<div/>')
+            Object.entries(up).forEach(([key, value])=> {
+                
+                
+            form.append($("<label/>").text(key).html(key));
+            form.append($("<br/>"));
+                    var val = `${JSON.stringify(value)}`;
+                    var v = val.replace("\"","").replace("\"","");
+                form.append($('<input type="text"/>').attr({id:key, name:key}).html(v));
+                form.append($("<br/>"));
+            });
+            form.append($(`<button onclick = insert(${JSON.stringify(up)})>submit</button>`));
+            $("#azuga").append(form).html;
+        }
+        function update(data){
+             console.log(data);
+             let str = "{";
+             let id = "";
+
+             Object.entries(data).forEach(([key , value])=>{
+                if(key == "objectID"){
+                    id = value;
+                }
+                var val = document.getElementById(key).value;
+                str+=`"${key}" :"${val}",`;
+             });
+             str += "}";
+             var json = str.replace(",}","}");
+             console.log(json);
+             fetch("http://localhost:8080/frontend/webapi/myresource1/update" , {
+                method: "PUT",
+                mode: "cors",
+                Headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: json
+            })
+                .then((res) => {
+                    // if (res.ok) {
+                    //     console.log("http request successful")
+                    // } else {
+                    //     console.log("http request unsuccessful")
+                    // }
+                    return res;
+                }).then(data => alert(data)).catch((err) =>{ alert(err);console.log(err)});
+
+        }
+        function insert(data){
+            console.log(data);
+             let str = "{";
+             let id = "";
+
+             Object.entries(data).forEach(([key , value])=>{
+                if(key == "objectID"){
+                    id = value;
+                }
+                var val = document.getElementById(key).value;
+                str+=`"${key}" :"${val}",`;
+             });
+             str += "}";
+             var json = str.replace(",}","}");
+             console.log(json);
+             fetch("http://localhost:8080/frontend/webapi/myresource/insert", {
+                method: "POST",
+                mode: "no-cors",
+                Headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: json
+            })
+                .then((res) => {
+                    // if (res.ok) {
+                    //     console.log("http request successful")
+                    // } else {
+                    //     console.log("http request unsuccessful")
+                    // }
+                    return res;
+                }).then(data => alert(data)).catch((err) =>{ alert(err);console.log(err)});
+        }
+
+
+
+        //searching
+document.querySelector(".searchBtn").addEventListener("keyup", () => {
+    let filter = document.querySelector("#mySearch").value;
+    let myTable = document.querySelector(".searchingTable");
+    let tr = myTable.getElementsByTagName("tr");
+    for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            let testValue = td.testContent || td.innerHTML;
+            (testValue.indexOf(filter) > -1) ? tr[i].style.display = "" : tr[i].style.display = "none";
+        }
+    }
+});
+
+
+//Sorting price ascending
+document.querySelector("#sortLowBtn").addEventListener("click", () => {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.querySelector(".searchingTable");
+    switching = true;
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("td")[3];
+            y = rows[i + 1].getElementsByTagName("td")[3];
+            if ((Number(x.innerHTML) > Number(y.innerHTML))) {
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+})
+
+//Sorting price descending
+document.querySelector("#sortHighBtn").addEventListener("click", () => {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.querySelector(".searchingTable");
+    switching = true;
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("td")[3];
+            y = rows[i + 1].getElementsByTagName("td")[3];
+            if ((Number(x.innerHTML) < Number(y.innerHTML))) {
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+})
+
+
+
+    </script>
+</body> 
+ 
+</html>
